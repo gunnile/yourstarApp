@@ -1,0 +1,7 @@
+{
+  "name": "yourstarApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
