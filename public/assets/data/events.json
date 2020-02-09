@@ -1,0 +1,64 @@
+[
+    {
+        "id": 1,
+        "date": "2019-06-19T12:04:11.537298Z",
+        "title": "Show Me The Money 777",
+        "image": "http://127.0.0.1:8000/media/%E1%84%89%E1%85%AD%E1%84%86%E1%85%B5%E1%84%83%E1%85%A5%E1%84%86%E1%85%A5%E1%84%82%E1%85%B5_777_4_XiLKGg8.jpg",
+        "description": "2018년 새롭게 돌아온 <쇼미더머니 트리플세븐>은, 베팅 시스템이 결합된 다양한 랩 배틀을 펼쳐 승패에 따라 돈을 뺏고 뺏기는 과정을 통해 상금을 쟁취할 우승자를 가려내는 서바이벌 프로그램이다.",
+        "star_list": [
+            {
+                "id": 1,
+                "name": "루피",
+                "image": "http://127.0.0.1:8000/media/loopy_eH97AM7.jpeg",
+                "description": "루피",
+                "type": 1
+            },
+            {
+                "id": 2,
+                "name": "슈퍼비",
+                "image": "http://127.0.0.1:8000/media/superbee_UPWALw9.jpeg",
+                "description": "슈퍼비",
+                "type": 1
+            },
+            {
+                "id": 3,
+                "name": "나플라",
+                "image": "http://127.0.0.1:8000/media/nafla_XDbrs17.jpeg",
+                "description": "나플라",
+                "type": 1
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "date": "2019-08-06T15:07:47.755928Z",
+        "title": "대한민국 제20대 대통령 선거",
+        "image": "http://127.0.0.1:8000/media/1920px-Flag_of_South_Korea.png",
+        "description": "대한민국 제20대 대통령 선거은 대한민국의 제20대 대통령을 선출하는 대한민국의 대통령 선거이다. 궐위나 헌법개정에 따른 임기단축, 선거법 및 공휴일 개정이 없는 한 2022년 3월 9일(수요일)에 실시될 예정이다.",
+        "star_list": []
+    },
+    {
+        "id": 4,
+        "date": "2019-08-09T23:35:08.152351Z",
+        "title": "Show Me The Money 8",
+        "image": "http://127.0.0.1:8000/media/showme8.jpg",
+        "description": "2019 국내 최초, 힙합 서바이벌의 무한 진화가 시작된다! <쇼미더머니 8>은 국내 현존하는 최장수 힙합 서바이벌 프로그램으로 힙합 씬의 최고의 프로듀서들이 함께 랩 배틀을 펼칠 래퍼를 선발, 치열한 대결을 통해 우승 상금의 주인공을 가려낸다.",
+        "star_list": [
+            {
+                "id": 2,
+                "name": "슈퍼비",
+                "image": "http://127.0.0.1:8000/media/superbee_UPWALw9.jpeg",
+                "description": "슈퍼비",
+                "type": 1
+            },
+            {
+                "id": 3,
+                "name": "나플라",
+                "image": "http://127.0.0.1:8000/media/nafla_XDbrs17.jpeg",
+                "description": "나플라",
+                "type": 1
+            }
+        ]
+    }
+]
+  
