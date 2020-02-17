@@ -5,7 +5,6 @@ import { IonReactRouter } from '@ionic/react-router';
 import { AppPage } from './declarations';
 
 import Menu from './components/Menu';
-import List from './pages/List';
 import { home, list } from 'ionicons/icons';
 import { Plugins } from '@capacitor/core';
 import { Event } from './models/Event';
@@ -36,6 +35,10 @@ import EventDetailPage from './pages/EventDetailPage';
 import EventsPage from './pages/EventsPage';
 import StarsPage from './pages/StarsPage';
 import StarDetailPage from './pages/StarDetailPage';
+import EvaluatePage from './pages/EvaluatePage';
+import EventsPage_ from './pages/EventsPage';
+import LoginPage from './pages/LoginPage';
+import Signup from './pages/Signup';
 
 const App: React.FC = () => {
   return (
@@ -81,12 +84,12 @@ interface DispatchProps {
 
 interface IonicAppProps extends StateProps, DispatchProps { }
 
-const IonicApp: React.FC<IonicAppProps> = ({events, loadAccessTokenData, loadEventData}) => {
+const IonicApp: React.FC<IonicAppProps> =  ({events, loadAccessTokenData, loadEventData}) => {
   useEffect(() => {
-    loadAccessTokenData();
+    // loadAccessTokenData();    
     // eslint-disable-next-line
   }, []);
-
+  
   return (
     <IonApp>
       <IonReactRouter>
@@ -95,8 +98,11 @@ const IonicApp: React.FC<IonicAppProps> = ({events, loadAccessTokenData, loadEve
           <IonRouterOutlet id="main">
             <Route path="/events" component={EventsPage} exact={true} />
             <Route path="/stars" component={StarsPage} exact={true} />
-            <Route path="/event/:id" component={EventDetailPage} />
-            <Route path="/star/:id" component={StarDetailPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/events/:id" component={EventDetailPage} />
+            <Route path="/stars/:id" component={StarDetailPage} />
+            <Route path="/evaluate/:id" component={EvaluatePage} />
             <Route path="/" render={() => <Redirect to="/events"/> } exact={true} />
           </IonRouterOutlet>
         </IonSplitPane>

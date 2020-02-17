@@ -1,6 +1,7 @@
 import { getUserData, setIsLoggedInData, setUsernameData, setHasSeenTutorialData, getAccessTokenData } from '../dataApi';
 import { ActionType } from '../../util/types';
 import { UserState } from './user.state';
+import { AccessToken } from '../../models/AccessToken';
 
 
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
@@ -27,9 +28,9 @@ export const setData = (data: Partial<UserState>) => ({
   data
 } as const);
 
-export const setAccessTokenData = (access_token : string) => ({
+export const setAccessTokenData = (token : AccessToken) => ({
   type: 'set-user-token-data',
-  access_token
+  token
 } as const);
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {

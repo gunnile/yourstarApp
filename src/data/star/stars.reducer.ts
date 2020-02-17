@@ -6,8 +6,11 @@ export const starsReducer = (state: StarsState, action: StarsActions): StarsStat
     case 'set-star-loading': {
       return { ...state, loading: action.isLoading };
     }
-    case 'set-star-data': {
-      return { ...state, ...action.data };
+    case 'set-stars-data': {
+      return { ...state, ...action.stars };
     }
+    // case 'set-star-data': {
+    //   return { ...state, star: action.star };
+    // }
   }
 }

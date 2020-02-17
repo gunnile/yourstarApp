@@ -1,8 +1,11 @@
+
+import { AccessToken } from '../../models/AccessToken';
+
 export interface UserState {
   isLoggedin: boolean;
   username?: string;
   darkMode: boolean;
   hasSeenTutorial: boolean;
   loading: boolean;
-  access_token: string;
+  token: AccessToken;
 };

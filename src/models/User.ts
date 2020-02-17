@@ -3,4 +3,5 @@ export interface User {
   name: string;
   image: string;
   access_token: string;
+  refresh_token: string;
 }

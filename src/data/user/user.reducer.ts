@@ -16,6 +16,6 @@ export function userReducer(state: UserState, action: UserActions): UserState {
     case 'set-is-loggedin':
       return { ...state, isLoggedin: action.loggedIn };
     case 'set-user-token-data':
-      return { ...state, access_token: action.access_token};
+      return { ...state,  ...action.token};
   }
 }

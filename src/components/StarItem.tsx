@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Star } from '../models/Star';
 import { Event } from '../models/Event';
 import { IonCard, IonCardHeader, IonItem, IonAvatar, IonCardContent, IonList, IonRow, IonCol, IonButton, IonIcon, IonActionSheet, IonCardSubtitle, IonCardTitle } from '@ionic/react';
@@ -15,12 +15,21 @@ const StarItem: React.FC<StarItemProps> = ({ star }) => {
   const [actionSheetButtons, setActionSheetButtons] = useState<ActionSheetButton[]>([]);
   const [actionSheetHeader, setActionSheetHeader] = useState('');
 
+  useEffect(() => {
+    if(star.type === "1"){
+      star.type = "힙합"
+    }else if(star.type === "2"){
+      star.type = "정치"
+    }
+
+  })
+  
   return (
    <> 
-    <IonCard className="welcome-card" routerLink ={`/star/${star.id}`}>
+    <IonCard className="welcome-card" routerLink ={`/stars/${star.id}`}>
       <img src={star.image} alt=""/>
       <IonCardHeader>
-        <IonCardSubtitle>{star.name}</IonCardSubtitle>
+        <IonCardSubtitle>{star.type}</IonCardSubtitle>
         <IonCardTitle>{star.name}</IonCardTitle>
       </IonCardHeader>
       <IonCardContent>

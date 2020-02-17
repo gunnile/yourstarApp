@@ -1,24 +1,19 @@
-import { getStarData } from '../dataApi';
+import { getStarData, getStarsData } from '../dataApi';
 import { ActionType } from '../../util/types';
 import { StarsState } from './stars.state';
 
-export const loadStarData = () => async (dispatch: React.Dispatch<any>) => {
-  dispatch(setLoading(true));
-  const data = await getStarData();
-  dispatch(setData(data));
-  dispatch(setLoading(false));
-}
+
 
 export const setLoading = (isLoading: boolean) => ({
   type: 'set-star-loading',
   isLoading
 } as const);
 
-export const setData = (data: Partial<StarsState>) => ({
-  type: 'set-star-data',
-  data
+export const setStarsData = (stars: Partial<StarsState>) => ({
+  type: 'set-stars-data',
+  stars
 } as const);
 
 export type StarsActions =
   | ActionType<typeof setLoading>
-  | ActionType<typeof setData>
+  | ActionType<typeof setStarsData>

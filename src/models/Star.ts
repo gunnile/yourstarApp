@@ -6,7 +6,7 @@ export interface Star {
   name: string;
   image: string;
   description: string;
-  type: number;
+  type: string;
   events: Event[];
-  score_list: Score[];
+  score_list: Score;
 }

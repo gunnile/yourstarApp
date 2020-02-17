@@ -14,11 +14,16 @@ import './EventsPage.scss';
 // import {Event} from '../model/Event';
 import { Plugins } from '@capacitor/core';
 import { Post } from '../models/Post';
-import { Event } from '../models/Event';
+
 import { loadEventData } from '../data/event/events.actions';
 import { connect } from '../data/connect';
 import * as selectors from '../data/selectors';
 import EventItem from '../components/EventItem';
+import { AccessToken } from '../models/AccessToken';
+import { loadAccessTokenData } from '../data/user/user.actions';
+import { getEventData, getEventsData } from '../data/dataApi';
+import { Event } from '../models/Event';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 interface Events {
   id: number;
@@ -36,10 +41,13 @@ const testUrl = 'https://jsonplaceholder.typicode.com/posts';
 
 const ACCESS_TOKEN = 'access_token';
 
-interface OwnProps { }
+interface OwnProps extends RouteComponentProps {
+  id: string;
+}
 
 interface StateProps {
   events: Event[];
+  token: AccessToken;
 }
 
 interface DispatchProps {
@@ -48,15 +56,16 @@ interface DispatchProps {
 
 interface EventPageProps extends OwnProps, StateProps, DispatchProps { }
 
-const EventsPage: React.FC<EventPageProps> = ({ events, loadEventData}) => {
+const EventsPage: React.FC<EventPageProps> = ({ loadEventData}) => {
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
   const [showCompleteToast, setShowCompleteToast] = useState(false);
+  const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    loadEventData();
+    getEventsData().then(events => setEvents(events));
     // eslint-disable-next-line
   }, []);
-  
+
   const doRefresh = () => {
     setTimeout(() => {
       ionRefresherRef.current!.complete();
@@ -67,7 +76,7 @@ const EventsPage: React.FC<EventPageProps> = ({ events, loadEventData}) => {
   function renderlistItems(list: Event[]) {
     return list
       .map(e => (
-          <IonCard className="welcome-card" routerLink ={`/event/${e.id}`}>
+          <IonCard className="welcome-card" routerLink ={`/events/${e.id}`}>
             <img src={e.image} alt=""/>
             <IonCardHeader>
               <IonCardSubtitle>{e.title}</IonCardSubtitle>
@@ -125,10 +134,13 @@ const EventsPage: React.FC<EventPageProps> = ({ events, loadEventData}) => {
   );
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
-    events: state.event.events
-  }),
-  mapDispatchToProps: {loadEventData},
-  component: React.memo(EventsPage)
-});
+export default EventsPage;
+
+// export default connect<OwnProps, StateProps, DispatchProps>({
+//   // mapStateToProps: (state) => ({
+//   //   events: state.event.events,
+//   //   token: state.user.token
+//   // }),
+//   // mapDispatchToProps: {loadEventData},
+//   component: React.memo(EventsPage)
+// });

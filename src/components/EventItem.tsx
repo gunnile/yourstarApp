@@ -4,8 +4,9 @@ import { Event } from '../models/Event';
 import { IonCard, IonCardHeader, IonItem, IonAvatar, IonCardContent, IonList, IonRow, IonCol, IonButton, IonIcon, IonActionSheet, IonCardSubtitle, IonCardTitle } from '@ionic/react';
 import { logoTwitter, shareAlt, chatboxes } from 'ionicons/icons';
 import { ActionSheetButton } from '@ionic/core';
+import { withRouter, RouteComponentProps } from 'react-router';
 
-interface EventItemProps {
+interface EventItemProps extends RouteComponentProps {
   event: Event;
   stars: Star[];
 }
@@ -16,8 +17,7 @@ const EventItem: React.FC<EventItemProps> = ({ event, stars }) => {
   const [actionSheetHeader, setActionSheetHeader] = useState('');
 
   return (
-   <> 
-    <IonCard className="welcome-card" routerLink ={`/event/${event.id}`}>
+    <IonCard className="welcome-card" routerLink ={`/events/${event.id}`}>
       <img src={event.image} alt=""/>
       <IonCardHeader>
         <IonCardSubtitle>{event.title}</IonCardSubtitle>
@@ -29,8 +29,7 @@ const EventItem: React.FC<EventItemProps> = ({ event, stars }) => {
         </p>
       </IonCardContent>
     </IonCard>
-    </>
   );
 };
 
-export default EventItem;
+export default withRouter(EventItem);

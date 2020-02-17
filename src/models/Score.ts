@@ -1,6 +1,9 @@
+import { ScoreName } from './ScoreName';
+
 export interface Score {
-    id: number;
-    score: string;
-    score_name: string;
+    overall: string;
+    
+    score_list: ScoreName[];
+    
   }
   

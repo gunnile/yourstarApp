@@ -14,12 +14,12 @@ import './StarsPage.scss';
 // import {Event} from '../model/Event';
 import { Plugins } from '@capacitor/core';
 import { Post } from '../models/Post';
-import { loadStarData } from '../data/star/stars.actions';
 import { connect } from '../data/connect';
 import * as selectors from '../data/selectors';
 import EventItem from '../components/EventItem';
 import { Star } from '../models/Star';
 import StarItem from '../components/StarItem';
+import { getStarsData } from '../data/dataApi';
 
 const { Storage } = Plugins;
 
@@ -32,17 +32,18 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  loadStarData: typeof loadStarData;
+
 }
 
 interface StarsPageProps extends OwnProps, StateProps, DispatchProps { }
 
-const StarsPage: React.FC<StarsPageProps> = ({ stars, loadStarData}) => {
+const StarsPage: React.FC<StarsPageProps> = () => {
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
   const [showCompleteToast, setShowCompleteToast] = useState(false);
+  const [stars, setStars] = useState<Star[]>([]);
 
   useEffect(() => {
-    loadStarData();
+    getStarsData().then(stars => setStars(stars));
     // eslint-disable-next-line
   }, []);
   
@@ -96,10 +97,12 @@ const StarsPage: React.FC<StarsPageProps> = ({ stars, loadStarData}) => {
   );
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
-    stars: state.star.stars
-  }),
-  mapDispatchToProps: {loadStarData},
-  component: React.memo(StarsPage)
-});
+export default StarsPage;
+
+// export default connect<OwnProps, StateProps, DispatchProps>({
+//   // mapStateToProps: (state) => ({
+//   //   stars: state.star.stars
+//   // }),
+//   // // mapDispatchToProps: {loadStarsData},
+//   component: React.memo(StarsPage)
+// });

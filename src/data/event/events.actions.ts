@@ -3,10 +3,10 @@ import { ActionType } from '../../util/types';
 import { EventsState } from './events.state';
 
 export const loadEventData = () => async (dispatch: React.Dispatch<any>) => {
-  dispatch(setLoading(true));
-  const data = await getEventData();
-  dispatch(setData(data));
-  dispatch(setLoading(false));
+//   dispatch(setLoading(true));
+//   const data = await getEventData();
+//   dispatch(setData(data));
+//   dispatch(setLoading(false));
 }
 
 export const setLoading = (isLoading: boolean) => ({
