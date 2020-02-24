@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Star } from '../models/Star';
 import { Event } from '../models/Event';
-import { IonCard, IonCardHeader, IonItem, IonAvatar, IonCardContent, IonList, IonRow, IonCol, IonButton, IonIcon, IonActionSheet, IonCardSubtitle, IonCardTitle } from '@ionic/react';
-import { logoTwitter, shareAlt, chatboxes } from 'ionicons/icons';
+import { IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle } from '@ionic/react';
 import { ActionSheetButton } from '@ionic/core';
 
 interface StarItemProps {
@@ -11,9 +10,9 @@ interface StarItemProps {
 }
 
 const StarItem: React.FC<StarItemProps> = ({ star }) => {
-  const [showActionSheet, setShowActionSheet] = useState(false);
-  const [actionSheetButtons, setActionSheetButtons] = useState<ActionSheetButton[]>([]);
-  const [actionSheetHeader, setActionSheetHeader] = useState('');
+  const [] = useState(false);
+  const [] = useState<ActionSheetButton[]>([]);
+  const [] = useState('');
 
   useEffect(() => {
     if(star.type === "1"){

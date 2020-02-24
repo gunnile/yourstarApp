@@ -6,7 +6,7 @@ import { logoTwitter, shareAlt, chatboxes } from 'ionicons/icons';
 import { ActionSheetButton } from '@ionic/core';
 import { tsConstructorType } from '@babel/types';
 import {Radar, Line, Pie} from 'react-chartjs-2'
-import { Score } from '../models/Score';
+import { StarScore } from '../models/StarScore';
 import Rater from 'react-rater';
 import ScoreChart from './ScoreChart';
 

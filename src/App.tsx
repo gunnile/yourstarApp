@@ -2,10 +2,8 @@ import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { AppPage } from './declarations';
 
 import Menu from './components/Menu';
-import { home, list } from 'ionicons/icons';
 import { Plugins } from '@capacitor/core';
 import { Event } from './models/Event';
 
@@ -28,7 +26,6 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import { loadEventData } from './data/event/events.actions';
-import { loadAccessTokenData } from './data/user/user.actions';
 import { connect } from './data/connect';
 import { AppContextProvider } from './data/AppContext';
 import EventDetailPage from './pages/EventDetailPage';
@@ -36,9 +33,9 @@ import EventsPage from './pages/EventsPage';
 import StarsPage from './pages/StarsPage';
 import StarDetailPage from './pages/StarDetailPage';
 import EvaluatePage from './pages/EvaluatePage';
-import EventsPage_ from './pages/EventsPage';
 import LoginPage from './pages/LoginPage';
-import Signup from './pages/Signup';
+import SignupPage from './pages/SignupPage';
+import UserPage from './pages/UserPage';
 
 const App: React.FC = () => {
   return (
@@ -48,22 +45,8 @@ const App: React.FC = () => {
   );
 };
 
-const appPages: AppPage[] = [
-  {
-    title: 'Events',
-    url: '/events',
-    icon: home
-  },
-  {
-    title: 'Stars',
-    url: '/stars',
-    icon: list
-  }
-];
 
-const authUrl = 'http://localhost:8000/o/token/'
-const clientId = '5ydtXbEwztDRhkP6en3nzYwWmNfdyDaCAZM53cO4'
-const clientSecret = '33vqD0D04rrq4m2TrV4WhV3NgNLsxs8fNUVzsmn0Ku9qU3RWajzmDq6b64BAIS2vSAXgEHRCaBIl8jVymCW6grddi28p7HJKC4u3kQRmYcsxZdhkcS8V9CVCV6GCXysu'
+
 
 const ACCESS_TOKEN = 'access_token';
 
@@ -78,13 +61,13 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  loadAccessTokenData: typeof loadAccessTokenData;
+  // loadAccessTokenData: typeof loadAccessTokenData;
   loadEventData: typeof loadEventData;
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
 
-const IonicApp: React.FC<IonicAppProps> =  ({events, loadAccessTokenData, loadEventData}) => {
+const IonicApp: React.FC<IonicAppProps> =  () => {
   useEffect(() => {
     // loadAccessTokenData();    
     // eslint-disable-next-line
@@ -94,15 +77,16 @@ const IonicApp: React.FC<IonicAppProps> =  ({events, loadAccessTokenData, loadEv
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
-          <Menu appPages={appPages} />
+          <Menu/>
           <IonRouterOutlet id="main">
             <Route path="/events" component={EventsPage} exact={true} />
             <Route path="/stars" component={StarsPage} exact={true} />
             <Route path="/login" component={LoginPage} />
-            <Route path="/signup" component={Signup} />
+            <Route path="/signup" component={SignupPage} />
             <Route path="/events/:id" component={EventDetailPage} />
             <Route path="/stars/:id" component={StarDetailPage} />
             <Route path="/evaluate/:id" component={EvaluatePage} />
+            <Route path="/mypage" component={UserPage} />
             <Route path="/" render={() => <Redirect to="/events"/> } exact={true} />
           </IonRouterOutlet>
         </IonSplitPane>
@@ -114,9 +98,5 @@ const IonicApp: React.FC<IonicAppProps> =  ({events, loadAccessTokenData, loadEv
 export default App;
 
 const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
-    events: state.event.events
-  }),
-  mapDispatchToProps: { loadEventData, loadAccessTokenData },
   component: IonicApp
 });

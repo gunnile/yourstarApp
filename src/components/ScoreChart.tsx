@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Star } from '../models/Star';
-import { Event } from '../models/Event';
-import { IonCard, IonCardHeader, IonItem, IonAvatar, IonCardContent, IonList, IonRow, IonCol, IonButton, IonIcon, IonActionSheet, IonCardSubtitle, IonCardTitle } from '@ionic/react';
-import { logoTwitter, shareAlt, chatboxes } from 'ionicons/icons';
-import { ActionSheetButton } from '@ionic/core';
-import { tsConstructorType } from '@babel/types';
-import {Radar, Line, Pie} from 'react-chartjs-2'
-import { Score } from '../models/Score';
+import {Radar} from 'react-chartjs-2'
 
 interface ChartProps {
   star: Star
 }
 
 const ScoreChart: React.FC<ChartProps> = ({star}) => {
-    const [scores, setScores] = useState<Number[]>([]);
-    const [labels, setLabels] = useState<String[]>([]);
+    const [scores] = useState<Number[]>([]);
+    const [labels] = useState<String[]>([]);
 
     useEffect(()=>{
         star.score_list.score_list.map(l => {
@@ -27,14 +21,18 @@ const ScoreChart: React.FC<ChartProps> = ({star}) => {
     const data = {
         labels: labels,
         datasets:[{
-            data: scores
-        }] 
+            data: scores,
+            fill: true
+        }]
+         
     }
 
     return (
-        <div className = "chart">
+        // <div className = "chart">
             <Radar
                 data = {data}
+                width = {5}
+                height = {1}
                 options={{
                     scale: {
                         angleLines: {
@@ -47,11 +45,15 @@ const ScoreChart: React.FC<ChartProps> = ({star}) => {
                     },
                     legend:{
                         display: false
-                    }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    
                 }}
+                
 
             />
-        </div>
+        // </div>
     );
 };
 

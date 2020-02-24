@@ -4,6 +4,7 @@ import './LoginPage.scss';
 import { setIsLoggedIn, setUsername } from '../data/user/user.actions';
 import { connect } from '../data/connect';
 import { RouteComponentProps } from 'react-router';
+import { postSignUp, getAccessTokenData } from '../data/dataApi';
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -35,7 +36,8 @@ const Login: React.FC<LoginProps> = ({setIsLoggedIn, history, setUsername: setUs
     if(username && password) {
       await setIsLoggedIn(true);
       await setUsernameAction(username);
-      history.push('/tabs/schedule', {direction: 'none'});
+      postSignUp(username, password).then(res => history.goBack());
+      
     }
   };
 

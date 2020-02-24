@@ -1,4 +1,4 @@
-import { Score } from "./Score";
+import { StarScore } from "./StarScore";
 import { Event } from "./Event";
 
 export interface Star {
@@ -8,5 +8,6 @@ export interface Star {
   description: string;
   type: string;
   events: Event[];
-  score_list: Score;
+  score_list: StarScore;
+  star_eval : StarScore[];
 }

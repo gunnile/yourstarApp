@@ -3,10 +3,7 @@ import { Plugins } from '@capacitor/core';
 import { Event } from '../models/Event';
 import { Star } from '../models/Star';
 import { User } from '../models/User';
-import { Post } from '../models/Post';
 import { AccessToken } from '../models/AccessToken';
-import { statement } from '@babel/template';
-import { Score } from '../models/Score';
 
 const { Storage } = Plugins;
 
@@ -19,66 +16,105 @@ const { Storage } = Plugins;
 
 const clientId = '1234'
 const clientSecret = '1234'
+const grantType = 'password'
 
 const authUrl = 'http://127.0.0.1:8000/o/token/'
+const signUpUrl = 'http://127.0.0.1:8000/sign_up/'
+
 const evalUrl = 'http://127.0.0.1:8000/star_scores_id_list/'
 const eventsUrl = 'http://localhost:8000/events/';
 const starsUrl = 'http://localhost:8000/stars/';
-const testUrl = 'https://jsonplaceholder.typicode.com/posts';
+const userUrl = 'http://localhost:8000/users/';
 
 
-const HAS_LOGGED_IN = 'hasLoggedIn';
+export const HAS_LOGGED_IN = 'hasLoggedIn';
 const HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
 const USERNAME = 'username';
 const ACCESS_TOKEN = 'access_token';
 
-const API_SERVER = true
 
 
-export const getAccessTokenData = async () => {
-    const response = await fetch(authUrl, {
+export const postSignUp = async (username: string, password : string) => {
+  const response = await fetch(signUpUrl, {
+    method: 'POST',
+    headers:{
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body:  new URLSearchParams({       
+        username : username,
+        password : password
+    })
+  });
+
+
+  localStorage.setItem(USERNAME, username)
+
+  return true;
+}
+
+export const getAccessTokenData = async (username: string, password : string) => {
+  const response = await fetch(authUrl, {
+    method: 'POST',
+    headers:{
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body:  new URLSearchParams({       
+        username : username,
+        password : password,
+        client_id : clientId,
+        client_secret : clientSecret,
+        grant_type : grantType
+    })
+  });
+
+  const token = await response.json() as AccessToken;
+  console.log(token.access_token)
+  localStorage.setItem(ACCESS_TOKEN, token.access_token)
+  localStorage.setItem(USERNAME, username)
+  localStorage.setItem(HAS_LOGGED_IN, "LOGIN")
+  
+  return token;
+}
+
+export const postEvaluate = async (scores : ScoreList[]) => {
+  // const token = localStorage.getItem(ACCESS_TOKEN)
+  // 토큰이 만료되었을때 리프레시 토큰 과정 필요
+  scores.map(async list => {
+    const response = await fetch(evalUrl, {
       method: 'POST',
       headers:{
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
+        // 'Authorization': 'Bearer ' + token
       },
-      body:  new URLSearchParams({
-          grant_type : 'password',
-          client_id : '1234',
-          client_secret : '1234',        
-          username : 'admin',
-          password : 'skrjsdlf'
+      body :  JSON.stringify({
+          score : list.score,
+          score_name : list.score_name,        
+          star : list.star
       })
     });
+  
+  })   
 
-    const token = await response.json() as AccessToken;
-    // await setAccessToken(user.access_token);
-    console.log(token.access_token)
-    
-    return token;
-  }
+  return true;
+}
 
-  export const postEvaluate = async (scores : ScoreList[]) => {
-    // const token = localStorage.getItem(ACCESS_TOKEN)
+export const getUserData = async (username : string, token : string) => {
+  const response = await fetch(userUrl + "?username=" + username,{
+    method: 'GET',
+    headers: {
+      'Content-type':'application/json',
+      'Authorization': 'Bearer ' + token
+    }
+  });
 
-    scores.map(async list => {
-      const response = await fetch(evalUrl, {
-        method: 'POST',
-        headers:{
-          'Content-Type': 'application/json'
-          // 'Authorization': 'Bearer ' + token
-        },
-        body :  JSON.stringify({
-            score : list.score,
-            score_name : list.score_name,        
-            star : list.star
-        })
-      });
-    
-      const jsonData =  await response.json()
-    })   
+  const jsonData =  await response.json()
+  
+  const users = jsonData.results as User[]
 
-    return true;
-  }
+  const user = users.pop() as User
+  
+  return user;
+}
 
 export const getEventsData = async () => {
   const response = await fetch(eventsUrl,{
@@ -136,17 +172,20 @@ export const getStarData = async (id: string) => {
   return star;
 }
 
-export const getUserData = async () => {
+export const getUserStateData = async () => {
   const response = await Promise.all([
     Storage.get({ key: HAS_LOGGED_IN }),
     Storage.get({ key: HAS_SEEN_TUTORIAL }),
+    Storage.get({ key: ACCESS_TOKEN }),
     Storage.get({ key: USERNAME })]);
   const isLoggedin = await response[0].value === 'true';
   const hasSeenTutorial = await response[1].value === 'true';
-  const username = await response[2].value || undefined;
+  const token = await response[2].value || undefined;
+  const username = await response[3].value || undefined;
   const data = {
     isLoggedin,
     hasSeenTutorial,
+    token,
     username
   }
   return data;
@@ -165,5 +204,14 @@ export const setUsernameData = async (username?: string) => {
     await Storage.remove({ key: USERNAME });
   } else {
     await Storage.set({ key: USERNAME, value: username });
+  }
+}
+
+
+export const setAccessTokenData = async (token?: string) => {
+  if (!token) {
+    await Storage.remove({ key: ACCESS_TOKEN });
+  } else {
+    await Storage.set({ key: ACCESS_TOKEN, value: token });
   }
 }

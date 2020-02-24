@@ -1,45 +1,21 @@
 import {
-  IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonItem,
-  IonLabel, IonList, IonListHeader, IonTitle, IonToolbar, IonContent, IonPage, 
-  IonButtons, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, 
-  IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, 
-  getConfig,
+  IonList, IonTitle, IonToolbar, IonContent, IonPage, 
+  IonButtons, IonMenuButton, IonRefresher, IonRefresherContent, IonToast, IonHeader, 
   IonGrid,
   IonRow,
-  IonCol} from '@ionic/react';
+  IonCol,
+  IonLoading} from '@ionic/react';
 
-import { book, build, colorFill, grid } from 'ionicons/icons';
 import React, { useEffect, useState, useRef } from 'react';
 import './EventsPage.scss';
-// import {Event} from '../model/Event';
-import { Plugins } from '@capacitor/core';
-import { Post } from '../models/Post';
 
 import { loadEventData } from '../data/event/events.actions';
-import { connect } from '../data/connect';
-import * as selectors from '../data/selectors';
 import EventItem from '../components/EventItem';
 import { AccessToken } from '../models/AccessToken';
-import { loadAccessTokenData } from '../data/user/user.actions';
-import { getEventData, getEventsData } from '../data/dataApi';
+// import { loadAccessTokenData } from '../data/user/user.actions';
+import { getEventsData } from '../data/dataApi';
 import { Event } from '../models/Event';
-import { withRouter, RouteComponentProps } from 'react-router';
-
-interface Events {
-  id: number;
-  date: string;
-  name: string;
-  image: string;
-  description: string;
-  starIds: number[];
-}
-
-const { Storage } = Plugins;
-
-const eventsUrl = 'https://localhost:8000/events/';
-const testUrl = 'https://jsonplaceholder.typicode.com/posts';
-
-const ACCESS_TOKEN = 'access_token';
+import { RouteComponentProps } from 'react-router';
 
 interface OwnProps extends RouteComponentProps {
   id: string;
@@ -56,13 +32,18 @@ interface DispatchProps {
 
 interface EventPageProps extends OwnProps, StateProps, DispatchProps { }
 
-const EventsPage: React.FC<EventPageProps> = ({ loadEventData}) => {
+const EventsPage: React.FC<EventPageProps> = () => {
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
   const [showCompleteToast, setShowCompleteToast] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
+  const [showLoading, setShowLoading] = useState(true);
 
   useEffect(() => {
-    getEventsData().then(events => setEvents(events));
+    setShowLoading(true)
+    getEventsData().then(events => {
+      setEvents(events)
+      setShowLoading(false)
+    });
     // eslint-disable-next-line
   }, []);
 
@@ -73,23 +54,6 @@ const EventsPage: React.FC<EventPageProps> = ({ loadEventData}) => {
     }, 2500)
   };
 
-  function renderlistItems(list: Event[]) {
-    return list
-      .map(e => (
-          <IonCard className="welcome-card" routerLink ={`/events/${e.id}`}>
-            <img src={e.image} alt=""/>
-            <IonCardHeader>
-              <IonCardSubtitle>{e.title}</IonCardSubtitle>
-              <IonCardTitle>{e.title}</IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-              <p>
-                {e.description}
-              </p>
-            </IonCardContent>
-          </IonCard>
-      ));
-  }
 
   return (
     <IonPage>
@@ -103,6 +67,12 @@ const EventsPage: React.FC<EventPageProps> = ({ loadEventData}) => {
       </IonHeader>
 
       <IonContent className={`outer-content`}>
+        <IonLoading
+          isOpen={showLoading}
+          onDidDismiss={() => setShowLoading(false)}
+          message={'Please wait...'}
+          duration={5000}
+        />
         <IonRefresher slot="fixed" ref={ionRefresherRef} onIonRefresh={doRefresh}>
           <IonRefresherContent />
         </IonRefresher>

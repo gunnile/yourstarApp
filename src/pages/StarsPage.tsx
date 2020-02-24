@@ -1,29 +1,21 @@
 import {
-  IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonItem,
-  IonLabel, IonList, IonListHeader, IonTitle, IonToolbar, IonContent, IonPage, 
-  IonButtons, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, 
-  IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, 
-  getConfig,
+  IonList, IonTitle, IonToolbar, IonContent, IonPage, 
+  IonButtons, IonMenuButton, IonRefresher, IonRefresherContent, IonToast, IonHeader, 
   IonGrid,
   IonRow,
-  IonCol} from '@ionic/react';
+  IonCol,
+  IonLoading,
+  IonButton,
+  IonIcon} from '@ionic/react';
 
-import { book, build, colorFill, grid } from 'ionicons/icons';
 import React, { useEffect, useState, useRef } from 'react';
 import './StarsPage.scss';
 // import {Event} from '../model/Event';
-import { Plugins } from '@capacitor/core';
-import { Post } from '../models/Post';
-import { connect } from '../data/connect';
-import * as selectors from '../data/selectors';
-import EventItem from '../components/EventItem';
 import { Star } from '../models/Star';
 import StarItem from '../components/StarItem';
 import { getStarsData } from '../data/dataApi';
 
-const { Storage } = Plugins;
 
-const ACCESS_TOKEN = 'access_token';
 
 interface OwnProps { }
 
@@ -41,9 +33,15 @@ const StarsPage: React.FC<StarsPageProps> = () => {
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
   const [showCompleteToast, setShowCompleteToast] = useState(false);
   const [stars, setStars] = useState<Star[]>([]);
+  const [showLoading, setShowLoading] = useState(true);
 
   useEffect(() => {
-    getStarsData().then(stars => setStars(stars));
+    setShowLoading(true)
+
+    getStarsData().then(stars => {
+      setStars(stars)
+      setShowLoading(false)
+    });
     // eslint-disable-next-line
   }, []);
   
@@ -66,6 +64,12 @@ const StarsPage: React.FC<StarsPageProps> = () => {
       </IonHeader>
 
       <IonContent className={`outer-content`}>
+        <IonLoading
+          isOpen={showLoading}
+          onDidDismiss={() => setShowLoading(false)}
+          message={'Please wait...'}
+          duration={5000}
+        />
         <IonRefresher slot="fixed" ref={ionRefresherRef} onIonRefresh={doRefresh}>
           <IonRefresherContent />
         </IonRefresher>
@@ -75,7 +79,7 @@ const StarsPage: React.FC<StarsPageProps> = () => {
           duration={2000}
           onDidDismiss={() => setShowCompleteToast(false)}
         />             
-        
+
         <IonList>
           <IonGrid fixed>
             <IonRow align-items-stretch>

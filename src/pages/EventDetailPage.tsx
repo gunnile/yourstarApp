@@ -1,37 +1,26 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { IonToolbar, IonContent, IonBackButton, IonPage, IonButtons, IonTitle, IonSegment, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig, IonAvatar, IonItem, IonList, IonLabel, IonItemSliding, IonItemOptions, IonItemOption, IonListHeader, IonThumbnail } from '@ionic/react';
-import { connect } from '../data/connect';
+import React, { useState, useEffect } from 'react';
+import { IonToolbar, IonContent, IonBackButton, IonPage, IonButtons, IonTitle, 
+  IonButton, IonIcon, IonHeader, IonItem, IonList, IonLabel, IonListHeader, IonThumbnail } from '@ionic/react';
 import { options } from 'ionicons/icons';
 import './EventsPage.scss'
-import * as selectors from '../data/selectors';
 import ShareSocialFab from '../components/ShareSocialFab';
 import { Event } from '../models/Event';
-import { RouteComponentProps, withRouter, useParams } from 'react-router';
-import { Star } from '../models/Star';
+import { RouteComponentProps, useParams } from 'react-router';
 import { getEventData } from '../data/dataApi';
-import { match } from "react-router-dom";
 
 
 interface OwnProps extends RouteComponentProps{
   id: string;
 };
-  
-interface StateProps {
 
-};
-
-interface DispatchProps { };
-
-interface EventPageProps extends OwnProps{};
-
-const EventDetailPage: React.FC<OwnProps> = ({match}) => {
-  const [showFilterModal, setShowFilterModal] = useState(false);
+const EventDetailPage: React.FC<OwnProps> = () => {
+  const [, setShowFilterModal] = useState(false);
   const [event, setEvent] = useState<Event>();
   const {id} = useParams();
 
   useEffect(() => {
     getEventData(id!).then(event => setEvent(event));
-  }, []);
+  }, [id]);
   
 
   if (!event) {

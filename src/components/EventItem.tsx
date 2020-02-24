@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Star } from '../models/Star';
 import { Event } from '../models/Event';
-import { IonCard, IonCardHeader, IonItem, IonAvatar, IonCardContent, IonList, IonRow, IonCol, IonButton, IonIcon, IonActionSheet, IonCardSubtitle, IonCardTitle } from '@ionic/react';
-import { logoTwitter, shareAlt, chatboxes } from 'ionicons/icons';
-import { ActionSheetButton } from '@ionic/core';
+import { IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle } from '@ionic/react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 interface EventItemProps extends RouteComponentProps {
@@ -11,10 +9,7 @@ interface EventItemProps extends RouteComponentProps {
   stars: Star[];
 }
 
-const EventItem: React.FC<EventItemProps> = ({ event, stars }) => {
-  const [showActionSheet, setShowActionSheet] = useState(false);
-  const [actionSheetButtons, setActionSheetButtons] = useState<ActionSheetButton[]>([]);
-  const [actionSheetHeader, setActionSheetHeader] = useState('');
+const EventItem: React.FC<EventItemProps> = ({ event }) => {
 
   return (
     <IonCard className="welcome-card" routerLink ={`/events/${event.id}`}>
